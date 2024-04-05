@@ -19,23 +19,22 @@ contract Report{
         return Reports;
     }
 
-    address adminId;
+    address[2] adminId = [0xd19C77555F21F7eaa48Dd820B60BDe55DC6985d9,0x1F9d23e204B56E4b0DD9091d2BAa2B691e67dc16];
 
-    function LoginAsAdmin(address _id,uint _password) internal view {
-        if(_id == 0x0Ec539aB6ddf140843106eE8DDa4e860C5350C8F && _password == 12345){
-            adminId==msg.sender;
+    function LoginAsAdmin() internal view returns(bool isAdmin){
+        for (uint i = 0; i < adminId.length; i++) {
+            if (adminId[i] == msg.sender) {
+                return true;
+            }
         }
-    }
-    modifier isAdmin(){
-        require(msg.sender == adminId,"Only Admin is Allowed");
-        _;
+        return false;
     }
 
     modifier isPeople(){
         require(msg.sender != address(0),"Invalid Address");
         _;
     }
-    
+
     function ReportCrime(string memory _crimetype, string memory _location, string memory _message, string memory _severity) public isPeople {
         Reports.push(report(block.timestamp,_crimetype,_location,_severity,_message,msg.sender,false));
     }
