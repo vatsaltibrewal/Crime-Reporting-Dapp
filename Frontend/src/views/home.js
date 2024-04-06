@@ -2,10 +2,61 @@ import React from 'react'
 
 import Script from 'dangerous-html/react'
 import { Helmet } from 'react-helmet'
+import { useState,useEffect } from 'react'
+// import abi from "./contractJson/Report.json"
+import {ethers} from "ethers"
 
 import './home.css'
 
+
 const Home = (props) => {
+
+  const [state, setState] = useState({
+    provider: null,
+    signer: null,
+    contract: null,
+  });
+  const [account, setAccount] = useState("None");
+  useEffect(() => {
+    const connectWallet = async () => {
+      const contractAddress = "0xe02445AF352Fed47b69Cfbd50308b04177160c5D";
+      const contractABI = abi.abi;
+      try {
+        const { ethereum } = window;
+
+        if (ethereum) {
+          const account = await ethereum.request({
+            method: "eth_requestAccounts",
+          });
+
+          window.ethereum.on("chainChanged", () => {
+            window.location.reload();
+          });
+
+          window.ethereum.on("accountsChanged", () => {
+            window.location.reload();
+          });
+
+          const provider = new ethers.providers.Web3Provider(ethereum);
+          const signer = provider.getSigner();
+          const contract = new ethers.Contract(
+            contractAddress,
+            contractABI,
+            signer
+          );
+          setAccount(account);
+          setState({ provider, signer, contract });
+        } else {
+          alert("Please install metamask");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    connectWallet();
+  }, []);
+  console.log(state);
+
   return (
     <div className="home-container">
       <Helmet>
@@ -15,7 +66,7 @@ const Home = (props) => {
       <header data-thq="thq-navbar" className="home-navbar">
         <span className="home-logo">CRIME ALERT</span>
         <a
-          href="https://github.com/vatsaltibrewal"
+          href="https://github.com/vatsaltibrewal/hackofiesta"
           target="_blank"
           rel="noreferrer noopener"
           className="home-link"
@@ -241,7 +292,7 @@ const Home = (props) => {
                 </p>
               </div>
               <a
-                href="https://www.youtube.com/watch?v=-HTubEJ61zU"
+                href="https://metamask.io/"
                 target="_blank"
                 rel="noreferrer noopener"
                 className="home-learn1 button"
@@ -279,7 +330,7 @@ const Home = (props) => {
               </p>
             </div>
             <a
-              href="https://github.com/vatsaltibrewal"
+              href="https://github.com/vatsaltibrewal/hackofiesta"
               target="_blank"
               rel="noreferrer noopener"
               className="home-view1 button-link button"
@@ -435,58 +486,6 @@ const Home = (props) => {
       </section>
       <div>
         <div className="home-container8">
-          <Script
-            html={`<script>
- /*
-  Accordion - Code Embed
-  */
-  const accordionContainers = document.querySelectorAll('[data-role="accordion-container"]'); // All accordion containers
-  const accordionContents = document.querySelectorAll('[data-role="accordion-content"]'); // All accordion content
-  const accordionIconsClosed = document.querySelectorAll('[data-role="accordion-icon-closed"]'); // All accordion closed icons
-  const accordionIconsOpen = document.querySelectorAll('[data-role="accordion-icon-open"]'); // All accordion open icons
-
-  accordionContents.forEach((accordionContent) => {
-      accordionContent.style.display = "none"; //Hides all accordion contents
-  });
-
-  accordionIconsClosed.forEach((icon) => {
-    icon.style.display = "flex"
-  })
-
-  accordionIconsOpen.forEach((icon) => {
-    icon.style.display = "none"
-  })
-
-  accordionContainers.forEach((accordionContainer, index) => {
-      accordionContainer.addEventListener("click", () => {
-          if (accordionContents[index].style.display === "flex") {
-              // If the accordion is already open, close it
-              accordionContents[index].style.display = "none";
-              accordionIconsClosed[index].style.display = "flex";
-              accordionIconsOpen[index].style.display = "none"
-          } else {
-              // If the accordion is closed, open it
-              accordionContents.forEach((accordionContent) => {
-                  accordionContent.style.display = "none"; //Hides all accordion contents
-              });
-
-              accordionIconsClosed.forEach((accordionIcon) => {
-                  accordionIcon.style.display = "flex"; // Resets all icon transforms to 0deg (default)
-              });
-
-              accordionIconsOpen.forEach((accordionIcon) => {
-                accordionIcon.style.display = "none";
-              })
-              
-              accordionContents[index].style.display = "flex"; // Shows accordion content
-              accordionIconsClosed[index].style.display = "none"; // Rotates accordion icon 180deg
-              accordionIconsOpen[index].style.display = "flex";
-          }
-      });
-  });
-</script>
-`}
-          ></Script>
         </div>
       </div>
     </div>
