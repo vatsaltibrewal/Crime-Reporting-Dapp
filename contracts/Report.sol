@@ -21,7 +21,7 @@ contract Report{
 
     address[2] adminId = [0xd19C77555F21F7eaa48Dd820B60BDe55DC6985d9,0x1F9d23e204B56E4b0DD9091d2BAa2B691e67dc16];
 
-    function LoginAsAdmin() internal view returns(bool isAdmin){
+    function LoginAsAdmin() public view returns(bool){
         for (uint i = 0; i < adminId.length; i++) {
             if (adminId[i] == msg.sender) {
                 return true;

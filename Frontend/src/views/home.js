@@ -2,7 +2,7 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 import { useState,useEffect } from 'react'
 import abi from "./contractJson/Report.json"
-import {ethers} from "ethers"
+import { ethers } from 'ethers'
 
 import './home.css'
 
@@ -14,30 +14,29 @@ const Home = (props) => {
     contract: null,
   });
   const [account, setAccount] = useState("None");
-  const contractAddress = "0x59dF851177A8D71FA36513e09E96E7F539d6828a";
-  const contractabi = require('./contractJson/Report.json');
 
   async function loginWithMetaMask() {
 
-    // const contractAddress = "0x59dF851177A8D71FA36513e09E96E7F539d6828a";
-    // const contractABI = abi.abi;
+    const contractAddress = "0x847F1e87E9692993a3e2B8Dd22867f73e3818281";
+    const contractABI = abi.abi;
 
     // Check if MetaMask is installed
     if (window.ethereum) {
       try {
         // Request MetaMask to connect
         await window.ethereum.request({ method: 'eth_requestAccounts' });
-        // const account = await ethereum.request({
-        //   method: "eth_requestAccounts",});
-        // const provider = new ethers.providers.Web3Provider(ethereum);
-        // const signer = provider.getSigner();
-        // const contract = new ethers.Contract(
-        //   contractAddress,
-        //   contractABI,
-        //   signer
-        // );
-        // setAccount(account);
-        // setState({ provider, signer, contract });
+        const account = await ethereum.request({
+          method: "eth_requestAccounts",});
+        
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(
+          contractAddress,
+          contractABI,
+          signer
+        );
+        setAccount(account);
+        setState({ provider, signer, contract });
         // MetaMask is connected and user is logged in
         // Redirect to another page
         window.location.href = '/dashboard';
@@ -51,31 +50,35 @@ const Home = (props) => {
       alert('Please install MetaMask extension to login with MetaMask.');
     }
   }
+  console.log(account);
   // console.log(state);
-  // const provider = new ethers.providers.Web3Provider(window.ethereum);
-  // const Contract = new ethers.Contract(contractAddress, contractabi, provider);
+ 
+  
+  async function loginAsAdmin() {
+    // Check if MetaMask is installed
+    if (window.ethereum) {
+        try {
+            // Request MetaMask to connect
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            const account = accounts[0]; // Assuming you're using the first account returned
 
-  // async function isAdmin() {
-  //   try {
-  //       // Call the smart contract function to check admin status
-  //       const isAdmin = await Contract.LoginAsAdmin();
-  //       return isAdmin;
-  //   } catch (error) {
-  //       console.error("Error checking admin status:", error);
-  //       return false;
-  //   }
-  // }
+            // Redirect if the logged-in account matches the admin address
+            if (account.toLowerCase() === '0x1f9d23e204b56e4b0dd9091d2baa2b691e67dc16') {
+                window.location.href = '/admin-dash';
+            } else {
+              alert('You are not authorized to access the admin dashboard.');
+            }
+        } catch (error) {
+            // User denied account access or MetaMask is not available
+            console.error('MetaMask login error:', error);
+            alert('Failed to login with MetaMask. Please make sure you have MetaMask installed and try again.');
+        }
+    } else {
+        // MetaMask extension is not installed
+        alert('Please install MetaMask extension to login with MetaMask.');
+    }
+}
 
-  // async function loginAsAdmin() {
-  //   const isAdminUser = await isAdmin();
-  //   if (isAdminUser) {
-  //       // Redirect to another page
-  //       window.location.href = '/admin-dash';
-  //   } else {
-  //       // Show a pop-up message indicating the user is not an admin
-  //       alert("You are not an admin.");
-  //   }
-  // }
 
   return (
     <div className="home-container">
@@ -229,7 +232,7 @@ const Home = (props) => {
                 data-thq="thq-dropdown-toggle"
                 className="home-dropdown-toggle2"
               >
-                <span className="home-text07">Admin</span>
+                <span className="home-text07" onClick={loginAsAdmin}>Admin</span>
                 <div
                   data-thq="thq-dropdown-arrow"
                   className="home-dropdown-arrow1"
