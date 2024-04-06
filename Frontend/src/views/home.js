@@ -1,13 +1,10 @@
 import React from 'react'
-
-import Script from 'dangerous-html/react'
 import { Helmet } from 'react-helmet'
 import { useState,useEffect } from 'react'
-// import abi from "./contractJson/Report.json"
+import abi from "./contractJson/Report.json"
 import {ethers} from "ethers"
 
 import './home.css'
-
 
 const Home = (props) => {
 
@@ -17,45 +14,68 @@ const Home = (props) => {
     contract: null,
   });
   const [account, setAccount] = useState("None");
-  useEffect(() => {
-    const connectWallet = async () => {
-      const contractAddress = "0xe02445AF352Fed47b69Cfbd50308b04177160c5D";
-      const contractABI = abi.abi;
+  const contractAddress = "0x59dF851177A8D71FA36513e09E96E7F539d6828a";
+  const contractabi = require('./contractJson/Report.json');
+
+  async function loginWithMetaMask() {
+
+    // const contractAddress = "0x59dF851177A8D71FA36513e09E96E7F539d6828a";
+    // const contractABI = abi.abi;
+
+    // Check if MetaMask is installed
+    if (window.ethereum) {
       try {
-        const { ethereum } = window;
-
-        if (ethereum) {
-          const account = await ethereum.request({
-            method: "eth_requestAccounts",
-          });
-
-          window.ethereum.on("chainChanged", () => {
-            window.location.reload();
-          });
-
-          window.ethereum.on("accountsChanged", () => {
-            window.location.reload();
-          });
-
-          const provider = new ethers.providers.Web3Provider(ethereum);
-          const signer = provider.getSigner();
-          const contract = new ethers.Contract(
-            contractAddress,
-            contractABI,
-            signer
-          );
-          setAccount(account);
-          setState({ provider, signer, contract });
-        } else {
-          alert("Please install metamask");
-        }
+        // Request MetaMask to connect
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        // const account = await ethereum.request({
+        //   method: "eth_requestAccounts",});
+        // const provider = new ethers.providers.Web3Provider(ethereum);
+        // const signer = provider.getSigner();
+        // const contract = new ethers.Contract(
+        //   contractAddress,
+        //   contractABI,
+        //   signer
+        // );
+        // setAccount(account);
+        // setState({ provider, signer, contract });
+        // MetaMask is connected and user is logged in
+        // Redirect to another page
+        window.location.href = '/dashboard';
       } catch (error) {
-        console.log(error);
+        // User denied account access or MetaMask is not available
+        console.error('MetaMask login error:', error);
+        alert('Failed to login with MetaMask. Please make sure you have MetaMask installed and try again.');
       }
-    };
-    connectWallet();
-  }, []);
-  console.log(state);
+    } else {
+      // MetaMask extension is not installed
+      alert('Please install MetaMask extension to login with MetaMask.');
+    }
+  }
+  // console.log(state);
+  // const provider = new ethers.providers.Web3Provider(window.ethereum);
+  // const Contract = new ethers.Contract(contractAddress, contractabi, provider);
+
+  // async function isAdmin() {
+  //   try {
+  //       // Call the smart contract function to check admin status
+  //       const isAdmin = await Contract.LoginAsAdmin();
+  //       return isAdmin;
+  //   } catch (error) {
+  //       console.error("Error checking admin status:", error);
+  //       return false;
+  //   }
+  // }
+
+  // async function loginAsAdmin() {
+  //   const isAdminUser = await isAdmin();
+  //   if (isAdminUser) {
+  //       // Redirect to another page
+  //       window.location.href = '/admin-dash';
+  //   } else {
+  //       // Show a pop-up message indicating the user is not an admin
+  //       alert("You are not an admin.");
+  //   }
+  // }
 
   return (
     <div className="home-container">
@@ -201,7 +221,7 @@ const Home = (props) => {
                 data-thq="thq-dropdown-toggle"
                 className="home-dropdown-toggle1"
               >
-                <span className="home-text06">User</span>
+                <span className="home-text06" onClick={loginWithMetaMask}>User</span>
               </div>
             </li>
             <li data-thq="thq-dropdown" className="home-dropdown1 list-item">
@@ -248,7 +268,7 @@ const Home = (props) => {
           <p className="home-caption">MAKE YOUR CITY SAFER</p>
         </div>
         <div className="home-buttons">
-          <button className="home-view button">REPORT CRIME</button>
+          <button className="home-view button" onClick={loginWithMetaMask}>REPORT CRIME</button>
           <a href="#learn1" className="home-learn button-clean button">
             Learn more
           </a>
@@ -490,6 +510,7 @@ const Home = (props) => {
       </div>
     </div>
   )
+  
 }
 
 export default Home
