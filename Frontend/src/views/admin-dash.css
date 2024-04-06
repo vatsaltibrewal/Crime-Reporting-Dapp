@@ -1,0 +1,15 @@
+.admin-dash-container {
+  width: 100%;
+  display: flex;
+  overflow: auto;
+  min-height: 100vh;
+  align-items: center;
+  flex-direction: column;
+}
+.admin-dash-container1 {
+  width: 1380px;
+  height: 1068px;
+}
+.admin-dash-container2 {
+  display: contents;
+}
