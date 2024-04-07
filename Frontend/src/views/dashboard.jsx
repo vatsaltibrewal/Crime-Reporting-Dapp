@@ -13,8 +13,6 @@ const Dashboard = (props) => {
   });
   const [account, setAccount] = useState("None");
   
-  
-
   const submitForm = async (event) => {
     event.preventDefault();
     const contractAddress = "0x847F1e87E9692993a3e2B8Dd22867f73e3818281";

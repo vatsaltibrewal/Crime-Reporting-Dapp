@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet'
 import { useState,useEffect } from 'react'
 import abi from "./contractJson/Report.json"
 import { ethers } from 'ethers'
+import ChatbotComponent from './chatbot'
 
 import './home.css'
 
@@ -335,6 +336,7 @@ const Home = (props) => {
             />
           </div>
         </div>
+        <ChatbotComponent/>
       </section>
       <section className="home-project">
         <div className="home-understand">

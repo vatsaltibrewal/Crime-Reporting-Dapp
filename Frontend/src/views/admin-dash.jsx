@@ -72,7 +72,6 @@ const AdminDash = (props) => {
                       <td>{memo.crimetype}</td>
                       <td>{memo.location}</td>
                       <td>{new Date(memo.timestamp * 1000).toLocaleString()}</td>
-                      
                       <td>{memo.message}</td>
                       <td>{memo.severity}</td>
                     </tr>
