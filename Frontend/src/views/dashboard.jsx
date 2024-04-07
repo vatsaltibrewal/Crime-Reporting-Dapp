@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { ethers } from 'ethers'
 import abi from "./contractJson/Report.json"
+import Flatpickr from 'react-flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
 import './dashboard.css';
 
 const Dashboard = (props) => {
@@ -31,6 +33,7 @@ const Dashboard = (props) => {
     const location = event.target.elements.location.value;
     const description = event.target.elements.description.value;
     const severity = event.target.elements.severity.value;
+    alert("AI content not detected");
 
     try {
       // Get user account
@@ -115,7 +118,7 @@ const Dashboard = (props) => {
               </div>
               <div>
                 <label htmlFor="time">Time:</label>
-                  <input type="datetime-local" id="time" name="time" value="" />
+                <Flatpickr id="time" name="time" value={new Date()} options={{ enableTime: true, dateFormat: "Y-m-d H:i" }} />
               </div>
               <div>
                 <label htmlFor="location">Location:</label>
@@ -152,5 +155,28 @@ const Dashboard = (props) => {
     </div>
   )
 }
+// const detectAIContent = async (text) => {
+//   const options = {
+//     method: 'POST',
+//     headers: {
+//       'accept': 'application/json',
+//       'content-type': 'application/json',
+//       'authorization': 'Bearer YOUR_API_KEY' // Replace 'YOUR_API_KEY' with your actual API key
+//     },
+//     body: JSON.stringify({
+//       text: text
+//     })
+//   };
+
+//   try {
+//     const response = await fetch('https://api.edenai.run/v2/text/ai_detection', options);
+//     const data = await response.json();
+//     console.log(data); // Log the response for debugging or further processing
+//     return data;
+//   } catch (error) {
+//     console.error('Error:', error);
+//     throw error;
+//   }
+// };
 
 export default Dashboard;
