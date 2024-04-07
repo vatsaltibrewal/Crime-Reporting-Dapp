@@ -49,10 +49,5 @@ IPFS: InterPlanetary File System for decentralized storage of crime report evide
 Contributing
 Contributions to the Decentralized Crime Reporting System are welcome! If you have any ideas for improvements, bug fixes, or new features, feel free to open an issue or submit a pull request. Please follow the contribution guidelines when contributing to this project.
 
-## Getting Started
-To access the Decentralized Crime Reporting System, simply visit the following link in your web browser:
-
-[Decentralized Crime Reporting System](https://hackofiesta-garuda.netlify.app)
-
-Make sure you have the MetaMask extension installed in your web browser. Log in to MetaMask and connect your wallet to interact with the application.
+##HAPPY BUILDING :)
 
