@@ -1,4 +1,3 @@
-# Team Garuda Hackofiesta
 
 # Decentralized Crime Reporting System
 
