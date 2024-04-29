@@ -19,7 +19,7 @@ const Home = (props) => {
 
   async function loginWithMetaMask() {
 
-    const contractAddress = "0x847F1e87E9692993a3e2B8Dd22867f73e3818281";
+    const contractAddress = "0xe9a9baa843605876f95eed6DF8230f7314F7cE91";
     const contractABI = abi.abi;
 
     // Check if MetaMask is installed
@@ -93,7 +93,7 @@ const Home = (props) => {
       <header data-thq="thq-navbar" className="home-navbar">
         <span className="home-logo">CRIME ALERT</span>
         <a
-          href="https://github.com/vatsaltibrewal/hackofiesta"
+          href="https://github.com/vatsaltibrewal/Crime-Reporting-Dapp"
           target="_blank"
           rel="noreferrer noopener"
           className="home-link"
@@ -103,7 +103,7 @@ const Home = (props) => {
           </svg>
         </a>
         <a
-          href="https://twitter.com/Iamkaushal0909"
+          href="https://x.com/vatsaltibrewal"
           target="_blank"
           rel="noreferrer noopener"
           className="home-link1"
@@ -129,7 +129,7 @@ const Home = (props) => {
             </div>
           </div>
           <a
-            href="https://www.linkedin.com/in/aditya-sharma1004"
+            href="https://www.linkedin.com/in/vatsaltibrewal"
             target="_blank"
             rel="noreferrer noopener"
             className="home-link2"
@@ -282,21 +282,14 @@ const Home = (props) => {
         </div>
       </section>
       <section className="home-description">
-        <animate-on-reveal
-          animation="bounce"
-          duration="300ms"
-          delay="1s"
-          direction="normal"
-          easing="ease"
-          iteration="1"
-        >
+        
           <img
             alt="image"
             src="/hero-divider-1500w.png"
-            data-thq-animate-on-reveal="true"
+            
             className="home-divider-image"
           />
-        </animate-on-reveal>
+        
       </section>
       <section className="home-cards">
         <div className="home-row"></div>
@@ -358,7 +351,7 @@ const Home = (props) => {
               </p>
             </div>
             <a
-              href="https://github.com/vatsaltibrewal/hackofiesta"
+              href="https://github.com/vatsaltibrewal/Crime-Reporting-Dapp"
               target="_blank"
               rel="noreferrer noopener"
               className="home-view1 button-link button"

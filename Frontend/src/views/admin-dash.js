@@ -16,7 +16,7 @@ const AdminDash = (props) => {
     
     useEffect(() => {
         const loadReports = async () => {
-            const contractAddress = "0x847F1e87E9692993a3e2B8Dd22867f73e3818281";
+            const contractAddress = "0xe9a9baa843605876f95eed6DF8230f7314F7cE91";
             const contractABI = abi.abi;
             if (window.ethereum) {
                 const provider = new ethers.providers.Web3Provider(ethereum);
