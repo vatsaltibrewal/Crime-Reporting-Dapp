@@ -4,6 +4,7 @@ import { useState,useEffect } from 'react'
 import abi from "./contractJson/Report.json"
 import { ethers } from 'ethers'
 import ChatbotComponent from './chatbot'
+import { withRouter } from 'react-router-dom';
 
 import './home.css'
 
@@ -40,7 +41,8 @@ const Home = (props) => {
         setState({ provider, signer, contract });
         // MetaMask is connected and user is logged in
         // Redirect to another page
-        window.location.href = '/dashboard';
+        props.history.push('/dashboard');
+        //window.location.href = '/dashboard';
       } catch (error) {
         // User denied account access or MetaMask is not available
         console.error('MetaMask login error:', error);
@@ -65,7 +67,8 @@ const Home = (props) => {
 
             // Redirect if the logged-in account matches the admin address
             if (account.toLowerCase() === '0x1f9d23e204b56e4b0dd9091d2baa2b691e67dc16') {
-                window.location.href = '/admin-dash';
+              props.history.push('/admin-dash');  
+              //window.location.href = '/admin-dash';
             } else {
               alert('You are not authorized to access the admin dashboard.');
             }
@@ -518,4 +521,4 @@ const Home = (props) => {
   
 }
 
-export default Home
+export default withRouter(Home)

@@ -44,6 +44,7 @@ const AdminDash = (props) => {
         };
         contract && reportsMessage();
       }, [contract]);
+      console.log(report);
     return (
         <div className="admin-dash-container">
           <Helmet>

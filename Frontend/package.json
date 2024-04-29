@@ -21,7 +21,7 @@
     "eject": "craco eject"
   },
   "engines": {
-    "node": "18.x"
+    "node": "20.x"
   },
   "browserslist": {
     "production": [
