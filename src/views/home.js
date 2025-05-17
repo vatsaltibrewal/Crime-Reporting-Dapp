@@ -1,88 +1,101 @@
-import React from 'react'
-import { Helmet } from 'react-helmet'
-import { useState,useEffect } from 'react'
-import abi from "./contractJson/Report.json"
-import { ethers } from 'ethers'
-import ChatbotComponent from './chatbot'
+// Home.jsx
+import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet';
+import { ethers } from 'ethers';
 import { withRouter } from 'react-router-dom';
+import abi from "./contractJson/Report.json";
+import Flatpickr from 'react-flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
+import ChatbotComponent from './chatbot';
+import './home.css';
 
-import './home.css'
+const CONTRACT_ADDRESS   = process.env.REACT_APP_CONTRACT_ADDRESS;
+const ADMIN_ADDRESS      = process.env.REACT_APP_ADMIN_ADDRESS;
+const SEPOLIA_CHAIN_ID   = '0xAA36A7'; 
 
 const Home = (props) => {
+  const [provider, setProvider] = useState(null);
+  const [signer,   setSigner]   = useState(null);
+  const [contract, setContract] = useState(null);
+  const [account,  setAccount]  = useState("None");
 
-  const [state, setState] = useState({
-    provider: null,
-    signer: null,
-    contract: null,
-  });
-  const [account, setAccount] = useState("None");
-
-  async function loginWithMetaMask() {
-
-    const contractAddress = "0xe9a9baa843605876f95eed6DF8230f7314F7cE91";
-    const contractABI = abi.abi;
-
-    // Check if MetaMask is installed
-    if (window.ethereum) {
-      try {
-        // Request MetaMask to connect
-        await window.ethereum.request({ method: 'eth_requestAccounts' });
-        const account = await ethereum.request({
-          method: "eth_requestAccounts",});
-        
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(
-          contractAddress,
-          contractABI,
-          signer
-        );
-        setAccount(account);
-        setState({ provider, signer, contract });
-        // MetaMask is connected and user is logged in
-        // Redirect to another page
-        props.history.push('/dashboard');
-        //window.location.href = '/dashboard';
-      } catch (error) {
-        // User denied account access or MetaMask is not available
-        console.error('MetaMask login error:', error);
-        alert('Failed to login with MetaMask. Please make sure you have MetaMask installed and try again.');
+  useEffect(() => {
+    const initOnboard = async () => {
+      if (!window.ethereum) {
+        console.error("MetaMask not detected");
+        return;
       }
-    } else {
-      // MetaMask extension is not installed
-      alert('Please install MetaMask extension to login with MetaMask.');
-    }
-  }
-  console.log(account);
-  // console.log(state);
- 
-  
-  async function loginAsAdmin() {
-    // Check if MetaMask is installed
-    if (window.ethereum) {
-        try {
-            // Request MetaMask to connect
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            const account = accounts[0]; // Assuming you're using the first account returned
-
-            // Redirect if the logged-in account matches the admin address
-            if (account.toLowerCase() === '0x1f9d23e204b56e4b0dd9091d2baa2b691e67dc16') {
-              props.history.push('/admin-dash');  
-              //window.location.href = '/admin-dash';
-            } else {
-              alert('You are not authorized to access the admin dashboard.');
-            }
-        } catch (error) {
-            // User denied account access or MetaMask is not available
-            console.error('MetaMask login error:', error);
-            alert('Failed to login with MetaMask. Please make sure you have MetaMask installed and try again.');
+      // 1️⃣ Switch or add Holesky network
+      try {
+        await window.ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: SEPOLIA_CHAIN_ID }],
+        });
+      } catch (switchError) {
+        if (switchError.code === 4902) {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_addEthereumChain',
+              params: [{
+                chainId:           SEPOLIA_CHAIN_ID,
+                chainName:         'Sepolia',
+                rpcUrls:           ['https://sepolia.infura.io'],
+                nativeCurrency:    { name: 'Ether', symbol: 'ETH', decimals: 18 },
+                blockExplorerUrls: ['https://sepolia.etherscan.io'],
+              }],
+            });
+          } catch (addError) {
+            console.error("Failed to add Holesky network", addError);
+            return;
+          }
+        } else {
+          console.error("Failed to switch to Holesky", switchError);
+          return;
         }
-    } else {
-        // MetaMask extension is not installed
-        alert('Please install MetaMask extension to login with MetaMask.');
-    }
-}
+      }
+      // 2️⃣ Set up provider, signer, account, contract
+      const prov = new ethers.providers.Web3Provider(window.ethereum);
+      await prov.send('eth_requestAccounts', []);
+      const sign = prov.getSigner();
+      const addr = await sign.getAddress();
+      const crimeContract = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        abi.abi,
+        sign
+      );
+      setProvider(prov);
+      setSigner(sign);
+      setAccount(addr.toLowerCase());
+      setContract(crimeContract);
+    };
+    initOnboard();
+  }, [account]);
 
+  useEffect(() => {
+    if (window.ethereum) {
+      window.ethereum.on('accountsChanged', (accounts) => {
+        if (accounts.length > 0) {
+          setAccount(accounts[0]);
+        } else {
+          setAccount('None');
+        }
+      });
+    }
+  }, []);
+
+  // Navigate to dashboard (user)
+  const loginWithMetaMask = () => {
+    props.history.push('/dashboard');
+  };
+
+  // Navigate to admin panel only if connected account matches
+  const loginAsAdmin = () => {
+    if (account === ADMIN_ADDRESS?.toLowerCase()) {
+      props.history.push('/admin-dash');
+    } else {
+      alert("You are not an admin");
+    }
+  };
 
   return (
     <div className="home-container">
@@ -93,7 +106,7 @@ const Home = (props) => {
       <header data-thq="thq-navbar" className="home-navbar">
         <span className="home-logo">CRIME ALERT</span>
         <a
-          href="https://github.com/vatsaltibrewal/Crime-Reporting-Dapp"
+          href=""
           target="_blank"
           rel="noreferrer noopener"
           className="home-link"
@@ -103,7 +116,7 @@ const Home = (props) => {
           </svg>
         </a>
         <a
-          href="https://x.com/vatsaltibrewal"
+          href=""
           target="_blank"
           rel="noreferrer noopener"
           className="home-link1"
@@ -129,7 +142,7 @@ const Home = (props) => {
             </div>
           </div>
           <a
-            href="https://www.linkedin.com/in/vatsaltibrewal"
+            href=""
             target="_blank"
             rel="noreferrer noopener"
             className="home-link2"
@@ -267,7 +280,7 @@ const Home = (props) => {
       <section className="home-hero">
         <div className="home-heading">
           <h1 className="home-header">
-            <span>CRIME REPORTING </span>
+            <span>CRIME REPORTING</span>
             <br></br>
             <span>DAPP</span>
             <br></br>
@@ -276,7 +289,7 @@ const Home = (props) => {
         </div>
         <div className="home-buttons">
           <button className="home-view button" onClick={loginWithMetaMask}>REPORT CRIME</button>
-          <a href="#learn1" className="home-learn button-clean button">
+          <a href="#learn-3" className="home-learn button-clean button">
             Learn more
           </a>
         </div>
@@ -351,8 +364,7 @@ const Home = (props) => {
               </p>
             </div>
             <a
-              href="https://github.com/vatsaltibrewal/Crime-Reporting-Dapp"
-              target="_blank"
+              href="#learn-3"
               rel="noreferrer noopener"
               className="home-view1 button-link button"
             >
@@ -363,7 +375,7 @@ const Home = (props) => {
           <img alt="image" src="/group%202415.svg" className="home-image2" />
         </div>
       </section>
-      <section className="home-faq">
+      <section className="home-faq" id='learn-3'>
         <h2 className="home-header3">We have all the answers</h2>
         <div className="home-accordion">
           <div
@@ -510,8 +522,7 @@ const Home = (props) => {
         </div>
       </div>
     </div>
-  )
-  
-}
+  );
+};
 
-export default withRouter(Home)
+export default withRouter(Home);

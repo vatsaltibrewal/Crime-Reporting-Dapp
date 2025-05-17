@@ -1,0 +1,211 @@
+/* dashboard.css */
+
+/* ==== Theme & Variables ==== */
+:root {
+  --bg-color:       #121826;         /* page background */
+  --panel-color:    #1f2937;         /* inner panels, forms, tables */
+  --text-color:     #e5e7eb;         /* primary text */
+  --accent-color:   #4f46e5;         /* buttons, highlights */
+  --accent-hover:   #4338ca;         /* button hover */
+  --error-color:    #ef4444;         /* error states */
+  --error-hover:    #dc2626;         /* error hover */
+  --border-radius:  0.5rem;          /* rounding */
+  --shadow-sm:      0 1px 3px rgba(0,0,0,0.1);
+  --shadow-md:      0 4px 6px rgba(0,0,0,0.15);
+  --transition:     0.25s ease;
+  --font-sans:      'Inter', sans-serif;
+}
+
+/* ==== Global Reset ==== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+}
+
+/* ==== Page Container ==== */
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  gap: 2rem;
+}
+
+/* ==== Two-Column Layout: SVG + Form ==== */
+.dashboard-content {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* SVG panel: left */
+.dashboard-image {
+  flex: 0 0 40%;
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+}
+
+/* Form panel: right */
+.dashboard-container1 {
+  flex: 1;
+  min-width: 300px;
+  background: var(--panel-color);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+}
+
+/* Inner wrapper */
+.dashboard-container2 h1 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* ==== Form Elements ==== */
+.dashboard-container1 form > div {
+  margin-bottom: 1rem;
+}
+
+.dashboard-container1 label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+}
+
+.dashboard-container1 input[type="text"],
+.dashboard-container1 select,
+.dashboard-container1 textarea,
+.dashboard-container1 .flatpickr-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background: #2f3a4a;
+  border: 1px solid #374151;
+  border-radius: var(--border-radius);
+  color: var(--text-color);
+  font-size: 0.9rem;
+  transition: border-color var(--transition);
+}
+
+.dashboard-container1 input:focus,
+.dashboard-container1 select:focus,
+.dashboard-container1 textarea:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+/* ==== Submit Button ==== */
+.dashboard-container1 button[type="submit"] {
+  display: inline-block;
+  background: var(--accent-color);
+  color: #fff;
+  font-size: 0.95rem;
+  padding: 0.7rem 1.4rem;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: background var(--transition), transform var(--transition);
+}
+
+.dashboard-container1 button[type="submit"]:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+/* ==== Decorative SVG Below (if used) ==== */
+.dashboard-image1 {
+  width: 100%;
+  max-width: 500px;
+  padding-top: 80px;
+  margin: 0 auto;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+}
+
+/* ==== Reports Table ==== */
+.admin-dash-container2 {
+  overflow-x: auto;
+}
+
+#crimeTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--panel-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+#crimeTable th,
+#crimeTable td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+#crimeTable thead {
+  background: #151b29;
+}
+
+#crimeTable thead th {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+#crimeTable tbody tr {
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+#crimeTable tbody tr:nth-child(even) {
+  background: #2a3340;
+}
+
+#crimeTable tbody tr:hover {
+  background: #3b4554;
+}
+
+/* ==== Responsive Breakpoints ==== */
+@media (max-width: 1024px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+  .dashboard-content {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-content {
+    flex-direction: column;
+  }
+  #crimeTable th,
+  #crimeTable td {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+  .dashboard-container1 {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-container1 button[type="submit"] {
+    width: 100%;
+  }
+}
