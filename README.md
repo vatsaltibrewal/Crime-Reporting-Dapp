@@ -1,10 +1,12 @@
-# CRIME ALERT - Anonymous Crime Reporting DApp
+# Crime Reporting DApp
 
-![CRIME ALERT Banner](public/group%202415.svg)
+![Logo](public/readme/Logo.png)
 
 ## 🔍 Vision
 
-**CRIME ALERT** aims to revolutionize crime reporting by leveraging blockchain technology to create a secure, anonymous platform where citizens can report crimes without fear of revealing their identity. Our mission is to increase crime reporting rates by removing the primary barrier - fear of retaliation or involvement.
+**Crime Reporting Dapp** aims to revolutionize crime reporting by leveraging blockchain technology to create a secure, anonymous platform where citizens can report crimes without fear of revealing their identity. Our mission is to increase crime reporting rates by removing the primary barrier - fear of retaliation or involvement.
+
+![Description](public/readme/Descriptive.png)
 
 ## 🌟 The Problem
 
@@ -35,7 +37,7 @@ A decentralized application built on the Ethereum blockchain that:
 
 ## 🛠️ Technology
 
-- Ethereum Blockchain (Sepolia Testnet)
+- Ethereum Blockchain
 - Smart Contracts
 - React.js
 - MetaMask Authentication
@@ -65,11 +67,11 @@ A decentralized application built on the Ethereum blockchain that:
 
 ## 📝 Project Status
 
-This project is currently in beta testing on the Sepolia testnet. We are continuously improving the platform based on user feedback and preparing for eventual mainnet deployment.
+This project is currently in beta testing. We are continuously improving the platform based on user feedback and preparing for eventual mainnet deployment.
 
 ## 📜 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
